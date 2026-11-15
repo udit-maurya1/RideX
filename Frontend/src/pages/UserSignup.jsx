@@ -1,16 +1,19 @@
 import logo from '../assets/logo.png'
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState ,useContext  } from 'react'
+import { Link , useNavigate} from 'react-router-dom'
+import axios from 'axios'
+import {UserDataContext} from '../context/UserContext'
+
 
 const UserSignup = () => {
-
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     firstname: '',
     lastname: '',
     email: '',
     password: ''
   })
-
+    const { user, setUser } = useContext(UserDataContext)
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -18,11 +21,36 @@ const UserSignup = () => {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(formData)
+    const newUser = {
+      fullname: {
+        firstname: formData.firstname,
+        lastname: formData.lastname
+      },
+      email: formData.email,
+      password: formData.password,
+    }
 
-    // Connect your signup API here
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, newUser)
+
+      if (response.status === 201 || response.status === 200) {
+        const data = response.data
+        setUser(data.user)
+        localStorage.setItem('token', data.token)
+        navigate('/Home')
+      }
+    } catch (error) {
+      console.error('Error registering user:', error)
+    }
+
+    setFormData({
+      firstname: '',
+      lastname: '',
+      email: '',
+      password: ''
+    })
   }
 
   return (

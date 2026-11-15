@@ -29,7 +29,7 @@ async function registerUser(req , res){
 
     const token = user.generateAuthToken();
 
-    res.status(200).json({token,user})
+    res.status(201).json({token,user})
 }
 
 async function loginUser(req, res){
