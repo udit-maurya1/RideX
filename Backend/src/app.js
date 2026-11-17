@@ -11,6 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/users', userRoutes)
 app.use('/captain',captainRoutes)
+app.use('/captains',captainRoutes)
 app.get('/',(req,res) =>{
     res.status('Hello world')
 })

@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const ConfirmRide = ({
   setConfirmRidePanel,
@@ -7,10 +8,26 @@ const ConfirmRide = ({
   pickup,
   destination
 }) => {
+  const navigate = useNavigate()
+
   const vehicle = selectedVehicle || {
     name: 'UberGo',
     image: 'https://imgs.search.brave.com/5dI1XjS7et0fBxAWF_crbf9sSiDgNk2YKJLK8PGvA5o/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzL2E3LzQ0/L2JiL2E3NDRiYjY2/NDBjOTg1Y2Y3MjM5/NWFlN2M2MWYzZWVk/LmpwZw',
     price: '₹193.20'
+  }
+
+  const handleConfirm = () => {
+    if (setVehicleFound) setVehicleFound(true)
+    if (setConfirmRidePanel) setConfirmRidePanel(false)
+    navigate('/riding', {
+      state: {
+        destination,
+        pickup,
+        price: vehicle.price,
+        vehicleImage: vehicle.image,
+        vehicleName: vehicle.name
+      }
+    })
   }
 
   return (
@@ -66,10 +83,7 @@ const ConfirmRide = ({
         </div>
 
         <button
-          onClick={() => {
-            if (setVehicleFound) setVehicleFound(true)
-            if (setConfirmRidePanel) setConfirmRidePanel(false)
-          }}
+          onClick={handleConfirm}
           className='w-full mt-5 bg-green-600 hover:bg-green-700 text-white font-semibold p-3 rounded-lg transition'
         >
           Confirm
