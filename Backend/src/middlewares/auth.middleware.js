@@ -16,7 +16,7 @@ if(!token)
 }
 
 const isBlacklisted = await blacklistTokenModel.findOne({
-    token: token
+    tokens: token
 })
 if(isBlacklisted){
     return res.status(401).json({
